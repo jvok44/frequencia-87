@@ -21,8 +21,11 @@ jobs:
       - name: Setup GraalVM
         uses: gluonhq/setup-graalvm@master
         with:
-          java-version: '17'
-          distribution: 'graalvm'
+          graalvm: latest
+          jdk: java17
+          arch: x86_64
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
