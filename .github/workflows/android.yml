@@ -1,3 +1,4 @@
+```yaml
 name: Build Android APK
 
 on:
@@ -11,21 +12,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Java
-        uses: actions/setup-java@v5
+      - name: Setup GraalVM
+        uses: graalvm/setup-graalvm@v1
         with:
-          distribution: temurin
-          java-version: '17'
-          cache: maven
-
-      - name: Setup Gluon GraalVM
-        uses: gluonhq/setup-graalvm@master
-        with:
-          graalvm: latest
-          jdk: java17
-          arch: x86_64
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          java-version: '17.0.9'
+          distribution: 'graalvm-community'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -33,13 +25,13 @@ jobs:
       - name: Install Android dependencies
         run: |
           sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
-          
+
       - name: Setup Maven 3.8.8
         run: |
           curl -fsSL https://archive.apache.org/dist/maven/maven-3/3.8.8/binaries/apache-maven-3.8.8-bin.tar.gz -o /tmp/maven.tar.gz
           sudo tar -xzf /tmp/maven.tar.gz -C /opt
           echo "/opt/apache-maven-3.8.8/bin" >> "$GITHUB_PATH"
-          
+
       - name: Build Android APK
         run: |
           mvn -version
@@ -49,15 +41,17 @@ jobs:
         if: always()
         run: |
           echo "===== ARQUIVOS DE LOG ====="
-          find target/gluonfx/aarch64-android/gvm/log -type f -print || true
+          find target/gluonfx -type f -print 2>/dev/null || true
 
           echo ""
           echo "===== PROCURANDO ERROS ====="
           grep -RniE "error|exception|failed|fatal|unsupported|cannot|could not" \
-            target/gluonfx/aarch64-android/gvm/log 2>/dev/null | tail -n 100 || true
+            target/gluonfx 2>/dev/null | tail -n 100 || true
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: frequencia-87-apk
-          path: target/gluonfx/aarch64-android/gvm/*.apk
+          path: |
+            target/gluonfx/**/*.apk
+```
