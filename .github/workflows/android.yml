@@ -47,16 +47,13 @@ jobs:
       - name: Show GluonFX logs
         if: always()
         run: |
-          echo "===== LOGS DO GLUONFX ====="
-          find target/gluonfx -type f -name "*.log" -print || true
+          echo "===== ARQUIVOS DE LOG ====="
+          find target/gluonfx/aarch64-android/gvm/log -type f -print || true
 
-          echo "===== PROCESS COMPILE ====="
-          cat target/gluonfx/log/process-compile-*.log || true
-
-          echo "===== LOGS GVM ====="
-          find target/gluonfx/aarch64-android/gvm/log -type f -maxdepth 1 -print -exec sh -c 'echo "===== $1 ====="; tail -n 200 "$1"' _ {} \;
-
-          exit 1
+          echo ""
+          echo "===== PROCURANDO ERROS ====="
+          grep -RniE "error|exception|failed|fatal|unsupported|cannot|could not" \
+            target/gluonfx/aarch64-android/gvm/log 2>/dev/null | tail -n 100 || true
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
