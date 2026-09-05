@@ -11,20 +11,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
+      - name: Setup Java
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: 17
+          java-version: '17'
+          cache: maven
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
-      - name: Build APK
-        run: ./gradlew assembleDebug
+      - name: Install Android dependencies
+        run: |
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Build Android APK
+        run: mvn -Pandroid gluonfx:build gluonfx:package
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: frequencia-87-apk
-          path: app/build/outputs/apk/debug/*.apk
+          path: target/gluonfx/aarch64-android/gvm/*.apk
