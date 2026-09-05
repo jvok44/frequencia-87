@@ -39,7 +39,24 @@ jobs:
           echo "/opt/apache-maven-3.8.8/bin" >> "$GITHUB_PATH"
           
       - name: Build Android APK
-        run: mvn -Pandroid gluonfx:build gluonfx:package
+        continue-on-error: true
+        run: |
+          mvn -version
+          mvn -Pandroid gluonfx:build gluonfx:package
+
+      - name: Show GluonFX logs
+        if: always()
+        run: |
+          echo "===== LOGS DO GLUONFX ====="
+          find target/gluonfx -type f -name "*.log" -print || true
+
+          echo "===== PROCESS COMPILE ====="
+          cat target/gluonfx/log/process-compile-*.log || true
+
+          echo "===== LOGS GVM ====="
+          find target/gluonfx/aarch64-android/gvm/log -type f -maxdepth 1 -print -exec sh -c 'echo "===== $1 ====="; tail -n 200 "$1"' _ {} \;
+
+          exit 1
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
