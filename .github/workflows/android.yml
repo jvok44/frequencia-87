@@ -18,6 +18,12 @@ jobs:
           java-version: '17'
           cache: maven
 
+      - name: Setup GraalVM
+        uses: gluonhq/setup-graalvm@master
+        with:
+          java-version: '17'
+          distribution: 'graalvm'
+
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
