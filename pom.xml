@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.frequencia</groupId>
@@ -11,48 +12,57 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <maven.compiler.release>17</maven.compiler.release>
-         <maven.compiler.source>17</maven.compiler.source>
-         <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+
         <javafx.version>21.0.2</javafx.version>
         <gluonfx.maven.plugin.version>1.0.22</gluonfx.maven.plugin.version>
+
         <mainClassName>com.frequencia.Main</mainClassName>
         <gluonfx.target>host</gluonfx.target>
     </properties>
 
     <dependencies>
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+
     </dependencies>
 
-<repositories>
-    <repository>
-        <id>gluon-releases</id>
-        <url>https://nexus.gluonhq.com/nexus/content/repositories/releases/</url>
-    </repository>
-</repositories>
+    <repositories>
+        <repository>
+            <id>gluon-releases</id>
+            <url>https://nexus.gluonhq.com/nexus/content/repositories/releases/</url>
+        </repository>
+    </repositories>
 
     <build>
-        <plugins>
-            <plugin>
 
-                  <plugin>
-                      <groupId>org.apache.maven.plugins</groupId>
-                      <artifactId>maven-compiler-plugin</artifactId>
-                      <version>3.13.0</version>
-                      <configuration>
-                          <release>17</release>
-                      </configuration>
-                  </plugin>
-                     
+        <plugins>
+
+            <!-- Maven Compiler -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <release>17</release>
+                </configuration>
+            </plugin>
+
+            <!-- JavaFX -->
+            <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
@@ -61,6 +71,7 @@
                 </configuration>
             </plugin>
 
+            <!-- GluonFX -->
             <plugin>
                 <groupId>com.gluonhq</groupId>
                 <artifactId>gluonfx-maven-plugin</artifactId>
@@ -68,6 +79,7 @@
                 <configuration>
                     <target>${gluonfx.target}</target>
                     <mainClass>${mainClassName}</mainClass>
+
                     <resourcesList>
                         <pattern>.*\\.png</pattern>
                         <pattern>.*\\.jpg</pattern>
@@ -75,17 +87,25 @@
                         <pattern>.*\\.wav</pattern>
                         <pattern>.*\\.mp3</pattern>
                     </resourcesList>
+
                 </configuration>
             </plugin>
+
         </plugins>
+
     </build>
 
     <profiles>
+
         <profile>
             <id>android</id>
+
             <properties>
                 <gluonfx.target>android</gluonfx.target>
             </properties>
+
         </profile>
+
     </profiles>
+
 </project>
