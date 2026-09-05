@@ -39,7 +39,6 @@ jobs:
           echo "/opt/apache-maven-3.8.8/bin" >> "$GITHUB_PATH"
           
       - name: Build Android APK
-        continue-on-error: true
         run: |
           mvn -version
           mvn -Pandroid gluonfx:build gluonfx:package
