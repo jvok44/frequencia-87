@@ -29,6 +29,13 @@
         </dependency>
     </dependencies>
 
+<repositories>
+    <repository>
+        <id>gluon-releases</id>
+        <url>https://nexus.gluonhq.com/nexus/content/repositories/releases/</url>
+    </repository>
+</repositories>
+
     <build>
         <plugins>
             <plugin>
